@@ -1,0 +1,68 @@
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: local
+    hooks:
+      - id: trailing-whitespace
+        name: trim trailing whitespace
+        entry: .venv/bin/trailing-whitespace-fixer
+        language: system
+        types: [text]
+      - id: end-of-file-fixer
+        name: fix end of files
+        entry: .venv/bin/end-of-file-fixer
+        language: system
+        types: [text]
+      - id: check-yaml
+        name: check yaml
+        entry: .venv/bin/check-yaml
+        language: system
+        types: [yaml]
+      - id: check-toml
+        name: check toml
+        entry: .venv/bin/check-toml
+        language: system
+        types: [toml]
+      - id: check-added-large-files
+        name: check for added large files
+        entry: .venv/bin/check-added-large-files
+        language: system
+      - id: check-merge-conflict
+        name: check for merge conflicts
+        entry: .venv/bin/check-merge-conflict
+        language: system
+        types: [text]
+      - id: detect-private-key
+        name: detect private key
+        entry: .venv/bin/detect-private-key
+        language: system
+        types: [text]
+      - id: block-env-files
+        name: block .env files
+        entry: Do not commit .env files; put sample values in .env.example
+        language: fail
+        files: '(^|/)(\.env(\..*)?|[^/]*\.env)$'
+        exclude: '(^|/)\.env\.example$'
+      - id: ruff-check
+        name: ruff check
+        entry: .venv/bin/ruff check --fix --force-exclude
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff format
+        entry: .venv/bin/ruff format --force-exclude
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy
+        entry: .venv/bin/mypy main.py tests
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: pytest
+        name: pytest
+        entry: .venv/bin/pytest -q
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

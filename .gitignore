@@ -221,3 +221,25 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Secrets & credentials (project policy) ---
+.env
+.env.*
+!.env.example
+*.env
+secrets/
+secrets.*
+*.secret
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials.json
+service-account*.json
+.npmrc
+.pypirc
+
+# Claude Code personal overrides
+.claude/settings.local.json
