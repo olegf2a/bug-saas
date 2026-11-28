@@ -23,9 +23,9 @@ repos:
     rev: v2.4.1
     hooks:
       - id: mypy
-        args: [--strict, main.py, tests]
+        args: [--strict, src, tests]
         pass_filenames: false
-        additional_dependencies: [pytest, fastapi, httpx]
+        additional_dependencies: [pytest, fastapi, httpx2]
 
   - repo: local
     hooks:
@@ -39,7 +39,7 @@ repos:
         name: pytest
         entry: pytest -q
         language: python
-        additional_dependencies: [pytest, fastapi, httpx]
+        additional_dependencies: [pytest, fastapi, httpx2]
         pass_filenames: false
         always_run: true
         stages: [pre-push]

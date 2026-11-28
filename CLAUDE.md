@@ -4,11 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-`bug-saas` (AI Incident & Bug Triage, see `README.md`) is initialized with a minimal FastAPI app (`main.py`, `GET /health`) and its test. Configured tooling:
+`bug-saas` (AI Incident & Bug Triage, see `README.md`) is initialized with a minimal FastAPI app in `src/app/` (`api/`, `services/`, `models/`; sample `GET /health`) and its test. Configured tooling:
 - `Makefile`: `install`, `hooks`, `lint`, `typecheck`, `test`, `check`. It uses `.venv/bin/python` if present, otherwise `python3` from PATH (override with `PYTHON=...`).
 - ruff (check + format) and mypy (strict) run only via pre-commit hooks from their official repos (`.pre-commit-config.yaml`), not from `.venv`.
 - pytest with FastAPI `TestClient`; also runs as a pre-push hook.
 - Dependencies: `requirements.txt` (runtime), `requirements-dev.txt` (dev).
+- Docker: `Dockerfile` for the app; `docker-compose.yml` (project `bug-triage`) runs app + PostgreSQL 17 + Redis 7, configured via `.env` (see `.env.example`).
+- CI: `.github/workflows/ci.yml` runs `make check` on every pull request and push to `main`.
+- Project rules for Claude Code: `.claude/rules/project.md`.
 - Local Python 3.12 virtualenv at `.venv/`; JetBrains project files in `.idea/` (gitignored).
 
 Run `make check` to verify changes. Project structure and architecture constraints are in `AGENTS.md`.
