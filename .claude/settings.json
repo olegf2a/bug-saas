@@ -1,0 +1,62 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(git add -f *.env*)",
+      "Bash(git add --force *.env*)",
+      "Bash(git add * -f *.env*)",
+      "Bash(git add * --force *.env*)"
+    ],
+    "ask": [
+      "Bash(git add -f *)",
+      "Bash(git add --force *)",
+      "Bash(rm *)",
+      "Bash(unlink *)",
+      "Bash(shred *)",
+      "Bash(git rm *)",
+      "Bash(git restore *)",
+      "Bash(git checkout -- *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * --force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push --mirror*)",
+      "Bash(git push * --mirror*)",
+      "Bash(git push --delete*)",
+      "Bash(git push * --delete*)",
+      "Bash(git push -d *)",
+      "Bash(git push * -d *)",
+      "Bash(git push * :*)",
+      "Bash(gh repo sync * --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)",
+      "Bash(dropdb *)",
+      "Bash(dropuser *)",
+      "Bash(redis-cli *flush*)",
+      "Bash(redis-cli *FLUSH*)",
+      "Bash(* DROP *)",
+      "Bash(* drop *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/confirm-destructive.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-gitignore.py"
+          }
+        ]
+      }
+    ]
+  }
+}

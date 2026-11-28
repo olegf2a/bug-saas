@@ -1,0 +1,45 @@
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.6
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.4.1
+    hooks:
+      - id: mypy
+        args: [--strict, main.py, tests]
+        pass_filenames: false
+        additional_dependencies: [pytest, fastapi, httpx]
+
+  - repo: local
+    hooks:
+      - id: block-env-files
+        name: block .env files
+        entry: Do not commit .env files; put sample values in .env.example
+        language: fail
+        files: '(^|/)(\.env(\..*)?|[^/]*\.env)$'
+        exclude: '(^|/)\.env\.example$'
+      - id: pytest
+        name: pytest
+        entry: pytest -q
+        language: python
+        additional_dependencies: [pytest, fastapi, httpx]
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
