@@ -243,3 +243,5 @@ service-account*.json
 
 # Claude Code personal overrides
 .claude/settings.local.json
+.claude/skills
+.idea/

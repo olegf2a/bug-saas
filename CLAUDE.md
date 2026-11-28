@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 `bug-saas` is a freshly initialized project with no application code yet. There is no build system, dependency manifest, test suite, or linter configured. `README.md` is empty. Update this file once the stack and structure are in place.
 
 What exists today:
-- A local Python 3.14 virtualenv at `.venv/` (only `pip` installed). Activate with `source .venv/bin/activate`.
+- A local Python 3.12 virtualenv at `.venv/` (only `pip` installed). Activate with `source .venv/bin/activate`.
 - JetBrains IDE project files in `.idea/`.
 - `AGENTS.md` with agent behavior instructions (see below).
 
@@ -37,7 +37,7 @@ Follow `AGENTS.md` in this repo. Key points:
 - Use sub-agents for code writing, review, and planning.
 - Use `git` / `gh` for repository work and `dnote` for notes, tasks, and memory.
 - Ask the user before promoting new instructions into `AGENTS.md`.
-- Skills (markdown + scripts) live in `/home/guest/larchanka/skill-repo`.
+- Skills (markdown + scripts) live in `./.claude/skills`.
 
 <!-- rtk-instructions v2 -->
 # Command output

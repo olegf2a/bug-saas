@@ -21,7 +21,7 @@
 
 ## Skills folder path with skill markdowns and scripts
 
-`/home/guest/larchanka/skill-repo`
+`./.claude/skills`
 
 
 **Best practices:**
