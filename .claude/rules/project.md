@@ -29,5 +29,7 @@ Basic rules for the AI Incident & Bug Triage service (see `README.md` and `AGENT
 
 - New runtime dependencies go into `requirements.txt` and into `additional_dependencies` of the
   `mypy` and `pytest` hooks in `.pre-commit-config.yaml`.
+- New infrastructure services (database, cache, workers) go into `docker-compose.yml` with a
+  healthcheck; their settings come from environment variables with sample values in `.env.example`.
 - Run `make check` before reporting a task as done.
 - Work on a feature branch; keep commits small and focused.
