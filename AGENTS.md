@@ -23,16 +23,33 @@
 
 `./.claude/skills`
 
+## Project structure
 
-**Best practices:**
-1. **Store by role, not individual** - When possible, categorize contacts by their role/function (e.g., "HR Lead", "Engineering Manager") rather than personal names, as roles change less frequently than individuals
-2. **Include key identifiers** - Always save User ID, handle, and email for quick Slack lookups
-3. **Add contextual notes** - Document why this contact is important and what you typically communicate about
-4. **Update when roles change** - Edit the note (`dnote edit 222 -c "..."`) when contacts change, rather than removing and recreating
-5. **Keep it focused** - Only store contacts essential for your current projects and communications
+```
+main.py                  FastAPI app (currently a GET /health sample)
+tests/                   pytest tests (FastAPI TestClient)
+requirements.txt         runtime dependencies
+requirements-dev.txt     dev dependencies (pytest, httpx, pre-commit)
+pyproject.toml           project metadata and pytest config
+.pre-commit-config.yaml  all linters/checkers (ruff, mypy, pre-commit-hooks, pytest on push)
+Makefile                 entry point for install / lint / typecheck / test / check
+.claude/                 Claude Code settings and guardrail hooks
+```
 
-**To manage contacts:**
-- View all contacts: `dnote find Sytac`
-- View full note: `dnote view 222`
-- Add new contact: Edit note 222 adding `### [Name]` section before the `---` separator
-- Remove contact: Delete the `### [Name]` section and save
+## Architecture constraints
+
+- Service: AI Incident & Bug Triage backend (see `README.md`).
+- Stack: Python >= 3.12, FastAPI + Pydantic v2, PostgreSQL (SQLAlchemy 2.0 + psycopg 3, migrations through Alembic), Redis as the store for new bug reports, Dramatiq for queue processing. Do not introduce other frameworks, databases or queues without asking the user.
+- Linters and type checkers (ruff, mypy) run only through pre-commit hooks from their official repos. Do not install them into `.venv` or call them directly.
+- Runtime dependencies go into `requirements.txt` and into `additional_dependencies` of the `mypy` and `pytest` hooks in `.pre-commit-config.yaml`.
+- Code must pass `mypy --strict` and ruff.
+- Never commit secrets; sample values go into `.env.example`.
+
+## Verification commands
+
+- `make install` — install dev dependencies.
+- `make hooks` — install git hooks (pre-commit and pre-push).
+- `make lint` — ruff check + ruff format.
+- `make typecheck` — mypy (strict).
+- `make test` — pytest (`python -m pytest -q`).
+- `make check` — all hooks, including pytest; run before reporting a task as done.

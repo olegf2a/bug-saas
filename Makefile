@@ -1,21 +1,25 @@
-BIN := .venv/bin
+# Use the project virtualenv if it exists, otherwise python3 from PATH.
+# Override with: make test PYTHON=/path/to/python
+VENV ?= .venv
+PYTHON ?= $(if $(wildcard $(VENV)/bin/python),$(VENV)/bin/python,python3)
 
 .PHONY: install lint typecheck test check hooks
 
 install:
-	$(BIN)/pip install -r requirements-dev.txt
+	$(PYTHON) -m pip install -r requirements-dev.txt
 
 lint:
-	$(BIN)/ruff check .
-	$(BIN)/ruff format --check .
+	$(PYTHON) -m pre_commit run ruff-check --all-files
+	$(PYTHON) -m pre_commit run ruff-format --all-files
 
 typecheck:
-	$(BIN)/mypy main.py tests
+	$(PYTHON) -m pre_commit run mypy --all-files
 
 test:
-	$(BIN)/pytest -q
+	$(PYTHON) -m pytest -q
 
-check: lint typecheck test
+check:
+	$(PYTHON) -m pre_commit run --all-files --hook-stage pre-push
 
 hooks:
-	$(BIN)/pre-commit install
+	$(PYTHON) -m pre_commit install

@@ -1,11 +1,9 @@
-def greet(name: str) -> str:
-    """Return a greeting for ``name``."""
-    return f"Hello, {name}!"
+from fastapi import FastAPI
+
+app = FastAPI(title="AI Incident & Bug Triage")
 
 
-def main() -> None:
-    print(greet("world"))
-
-
-if __name__ == "__main__":
-    main()
+@app.get("/health")
+def health() -> dict[str, str]:
+    """Report that the service is up."""
+    return {"status": "ok"}

@@ -4,12 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-`bug-saas` is a freshly initialized project with no application code yet. There is no build system, dependency manifest, test suite, or linter configured. `README.md` is empty. Update this file once the stack and structure are in place.
+`bug-saas` (AI Incident & Bug Triage, see `README.md`) is initialized with a minimal FastAPI app (`main.py`, `GET /health`) and its test. Configured tooling:
+- `Makefile`: `install`, `hooks`, `lint`, `typecheck`, `test`, `check`. It uses `.venv/bin/python` if present, otherwise `python3` from PATH (override with `PYTHON=...`).
+- ruff (check + format) and mypy (strict) run only via pre-commit hooks from their official repos (`.pre-commit-config.yaml`), not from `.venv`.
+- pytest with FastAPI `TestClient`; also runs as a pre-push hook.
+- Dependencies: `requirements.txt` (runtime), `requirements-dev.txt` (dev).
+- Local Python 3.12 virtualenv at `.venv/`; JetBrains project files in `.idea/` (gitignored).
 
-What exists today:
-- A local Python 3.12 virtualenv at `.venv/` (only `pip` installed). Activate with `source .venv/bin/activate`.
-- JetBrains IDE project files in `.idea/`.
-- `AGENTS.md` with agent behavior instructions (see below).
+Run `make check` to verify changes. Project structure and architecture constraints are in `AGENTS.md`.
 
 ## Working principles
 

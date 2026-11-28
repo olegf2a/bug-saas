@@ -5,6 +5,7 @@ Denies the edit when the resulting .gitignore would
   - drop an env rule (.env, .env.*, *.env) that the current file has, or
   - add a negation that un-ignores env files (e.g. !.env, !.env.local); !.env.example is allowed.
 """
+
 import json
 import os
 import re
@@ -16,15 +17,25 @@ ENV_NEGATION = re.compile(r"^!\S*\.env(\b|\.|\*|$)")
 
 
 def rules(text):
-    return {ln.strip() for ln in text.splitlines() if ln.strip() and not ln.strip().startswith("#")}
+    return {
+        ln.strip()
+        for ln in text.splitlines()
+        if ln.strip() and not ln.strip().startswith("#")
+    }
 
 
 def deny(reason):
-    print(json.dumps({"hookSpecificOutput": {
-        "hookEventName": "PreToolUse",
-        "permissionDecision": "deny",
-        "permissionDecisionReason": f"Blocked: {reason}. .env files must stay ignored by git (project policy).",
-    }}))
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "deny",
+                    "permissionDecisionReason": f"Blocked: {reason}. .env files must stay ignored by git (project policy).",
+                }
+            }
+        )
+    )
     sys.exit(0)
 
 
@@ -54,7 +65,11 @@ def main():
     removed = sorted((PROTECTED & before) - after)
     if removed:
         deny(f"edit removes env rule(s) from .gitignore: {', '.join(removed)}")
-    unignored = sorted(r for r in after - before if ENV_NEGATION.match(r) and r not in ALLOWED_NEGATIONS)
+    unignored = sorted(
+        r
+        for r in after - before
+        if ENV_NEGATION.match(r) and r not in ALLOWED_NEGATIONS
+    )
     if unignored:
         deny(f"edit adds negation(s) that un-ignore env files: {', '.join(unignored)}")
 
